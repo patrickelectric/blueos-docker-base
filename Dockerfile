@@ -140,7 +140,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
             libx265-199 \
             libxml2 \
     # Remove bloat packages not needed for headless BlueOS
-    && apt-get purge -y --auto-remove adwaita-icon-theme libflite1 librsvg2-2 \
+    && apt-get purge -y --auto-remove adwaita-icon-theme libflite1 \
     && rm -rf /usr/share/icons /usr/share/themes \
     # Clean up apt
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
