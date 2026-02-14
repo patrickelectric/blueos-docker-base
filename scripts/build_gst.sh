@@ -58,7 +58,11 @@ GST_MESON_OPTIONS_DEFAULT=(
     -D orc=disabled
     -D python=disabled
     -D qt5=disabled
-    -D rs=disabled
+    -D rs=enabled
+    -D gst-plugins-rs:audiofx=disabled
+    -D gst-plugins-rs:gtk4=disabled
+    -D gst-plugins-rs:sodium=disabled
+    -D gst-plugins-rs:inter=enabled
     -D rtsp_server=enabled
     -D tests=disabled
     -D tls=enabled
@@ -228,6 +232,12 @@ apt-get update
 apt-get install --assume-yes --no-install-recommends --mark-auto \
     "${GST_BUILD_TOOLS[@]}" "${GST_BUILD_LIBS[@]}"
 python3 -m pip install --no-cache-dir "${GST_PIP_DEPENDENCIES[@]}"
+
+# Install Rust toolchain (needed for gst-plugins-rs: intersink, intersrc, etc.)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+# shellcheck source=/dev/null
+source "$HOME/.cargo/env"
+cargo install cargo-c
 
 # Download and install IL headers if needed:
 if [ -n "$USERLAND_PATH" ]; then
