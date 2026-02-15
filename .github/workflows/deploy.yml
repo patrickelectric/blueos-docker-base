@@ -44,8 +44,8 @@ jobs:
         run: |
           echo "DOCKER_IMAGE=${DOCKER_USERNAME:-bluerobotics}/${PROJECT}-${DOCKER}" >> $GITHUB_ENV
 
-          mkdir -p "${ARTIFACTS_PATH}"
-          mkdir -p "${DIGESTS_PATH}"
+          rm -rf "${ARTIFACTS_PATH}" "${DIGESTS_PATH}"
+          mkdir -p "${ARTIFACTS_PATH}" "${DIGESTS_PATH}"
 
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
