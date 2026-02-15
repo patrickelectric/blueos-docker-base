@@ -299,6 +299,10 @@ python3 -m pip install --no-cache-dir "${GST_PIP_DEPENDENCIES[@]}"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
 # shellcheck source=/dev/null
 source "$HOME/.cargo/env"
+# Use system git instead of Cargo's built-in libgit2 for fetching dependencies.
+# libgit2 fails on 32-bit ARM (armv7) with "Value too large for defined data type"
+# when cloning large repositories like gstreamer-rs.
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
 cargo install cargo-c
 
 # Download and install IL headers if needed:
