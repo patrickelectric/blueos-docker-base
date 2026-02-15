@@ -18,7 +18,7 @@ on:
 
 jobs:
   build:
-    runs-on: x6-x86
+    runs-on: s6-x86
 
     strategy:
       matrix:
@@ -148,7 +148,7 @@ jobs:
           fi
 
   merge:
-    runs-on: x6-x86
+    runs-on: s6-x86
     needs:
       - build
     steps:
