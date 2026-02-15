@@ -347,6 +347,19 @@ meson setup "$GST_BUILD_DIR" "${GST_MESON_OPTIONS[@]}"
 
 DESTDIR="$GST_INSTALL_DIR" ninja install -C "$GST_BUILD_DIR"
 
+# Strip all installed binaries and shared libraries.
+# Meson's --strip flag only strips meson-native targets (executable,
+# shared_library) but NOT custom_target outputs. The Rust .so plugins from
+# gst-plugins-rs are installed via custom_target and retain full debug info
+# (debug = true in Cargo's release profile). Combined with codegen-units = 1
+# (added in gst-plugins-rs 1.26.10), the optimizer inlines aggressively and
+# the unstripped debug symbols add ~750 MB to the image.
+find "$GST_INSTALL_DIR" -type f \( -name '*.so' -o -name '*.so.*' \) \
+    -exec strip --strip-unneeded {} + 2>/dev/null || true
+find "$GST_INSTALL_DIR" -type f -executable -exec sh -c '
+    for f; do file "$f" | grep -q "ELF" && strip --strip-unneeded "$f" 2>/dev/null; done
+' _ {} + || true
+
 # Pre-install RTSP helpers
 GST_RTSP_HELPERS=(
     test-mp4
