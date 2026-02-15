@@ -83,7 +83,7 @@ jobs:
           restore-keys: ${{ env.PLATFORM_PAIR }}-cache-
 
       - name: Inject cache into Docker
-        uses: reproducible-containers/buildkit-cache-dance@v3
+        uses: reproducible-containers/buildkit-cache-dance@v3.2.0
         with:
           cache-map: |
             {
